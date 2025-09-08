@@ -300,6 +300,7 @@ export const createDomainLabels = (
 	const {
 		host,
 		isHostRegex,
+		hostPriority,
 		port,
 		https,
 		uniqueConfigKey,
@@ -317,6 +318,10 @@ export const createDomainLabels = (
 		`traefik.http.services.${routerName}.loadbalancer.server.port=${port}`,
 		`traefik.http.routers.${routerName}.service=${routerName}`,
 	];
+
+	if (hostPriority) {
+		labels.push(`traefik.http.routers.${routerName}.priority=${hostPriority}`);
+	}
 
 	// Collect middlewares for this router
 	const middlewares: string[] = [];
