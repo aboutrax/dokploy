@@ -299,6 +299,7 @@ export const createDomainLabels = (
 ) => {
 	const {
 		host,
+		isHostRegex,
 		port,
 		https,
 		uniqueConfigKey,
@@ -309,8 +310,9 @@ export const createDomainLabels = (
 		internalPath,
 	} = domain;
 	const routerName = `${appName}-${uniqueConfigKey}-${entrypoint}`;
+	const hostOption = isHostRegex ? "HostRegexp" : "Host";
 	const labels = [
-		`traefik.http.routers.${routerName}.rule=Host(\`${host}\`)${path && path !== "/" ? ` && PathPrefix(\`${path}\`)` : ""}`,
+		`traefik.http.routers.${routerName}.rule=${hostOption}(\`${host}\`)${path && path !== "/" ? ` && PathPrefix(\`${path}\`)` : ""}`,
 		`traefik.http.routers.${routerName}.entrypoints=${entrypoint}`,
 		`traefik.http.services.${routerName}.loadbalancer.server.port=${port}`,
 		`traefik.http.routers.${routerName}.service=${routerName}`,
