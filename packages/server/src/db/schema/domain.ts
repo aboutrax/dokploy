@@ -30,6 +30,7 @@ export const domains = pgTable("domain", {
 		.$defaultFn(() => nanoid()),
 	host: text("host").notNull(),
 	isHostRegex: boolean("isHostRegex").notNull().default(false),
+	hostPriority: integer("hostPriority").default(0),
 	https: boolean("https").notNull().default(false),
 	port: integer("port").default(3000),
 	path: text("path").default("/"),
@@ -76,6 +77,7 @@ const createSchema = createInsertSchema(domains, domain._def.schema.shape);
 export const apiCreateDomain = createSchema.pick({
 	host: true,
 	isHostRegex: true,
+	hostPriority: true,
 	path: true,
 	port: true,
 	https: true,
@@ -112,6 +114,7 @@ export const apiUpdateDomain = createSchema
 	.pick({
 		host: true,
 		isHostRegex: true,
+		hostPriority: true,
 		path: true,
 		port: true,
 		https: true,
