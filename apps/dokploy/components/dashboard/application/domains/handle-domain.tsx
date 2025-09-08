@@ -48,6 +48,11 @@ export const domain = z
 	.object({
 		host: z.string().min(1, { message: "Add a hostname" }),
 		isHostRegex: z.boolean().optional(),
+		hostPriority: z
+			.number()
+			.min(0, { message: "Priority must be at least 0" })
+			.max(1000, { message: "Priority must be 1000 or below" })
+			.optional(),
 		path: z.string().min(1).optional(),
 		internalPath: z.string().optional(),
 		stripPath: z.boolean().optional(),
@@ -188,6 +193,7 @@ export const AddDomain = ({ id, type, domainId = "", children }: Props) => {
 		defaultValues: {
 			host: "",
 			isHostRegex: false,
+			hostPriority: undefined,
 			path: undefined,
 			internalPath: undefined,
 			stripPath: false,
@@ -225,6 +231,7 @@ export const AddDomain = ({ id, type, domainId = "", children }: Props) => {
 			form.reset({
 				host: "",
 				isHostRegex: false,
+				hostPriority: undefined,
 				path: undefined,
 				internalPath: undefined,
 				stripPath: false,
@@ -556,6 +563,25 @@ export const AddDomain = ({ id, type, domainId = "", children }: Props) => {
 											</FormControl>
 										</FormItem>
 									)}
+								/>
+								
+								<FormField
+									control={form.control}
+									name="hostPriority"
+									render={({ field }) => {
+										return (
+											<FormItem>
+												<FormLabel>Host Priority</FormLabel>
+												<FormDescription>
+													The priority of the host (higher numbers indicate higher priority)
+												</FormDescription>
+												<FormControl>
+													<NumberInput placeholder={"0"} {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										);
+									}}
 								/>
 
 								<FormField
