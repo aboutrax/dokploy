@@ -47,6 +47,7 @@ export type CacheType = "fetch" | "cache";
 export const domain = z
 	.object({
 		host: z.string().min(1, { message: "Add a hostname" }),
+		isHostRegex: z.boolean().optional(),
 		path: z.string().min(1).optional(),
 		internalPath: z.string().optional(),
 		stripPath: z.boolean().optional(),
@@ -186,6 +187,7 @@ export const AddDomain = ({ id, type, domainId = "", children }: Props) => {
 		resolver: zodResolver(domain),
 		defaultValues: {
 			host: "",
+			isHostRegex: false,
 			path: undefined,
 			internalPath: undefined,
 			stripPath: false,
@@ -222,6 +224,7 @@ export const AddDomain = ({ id, type, domainId = "", children }: Props) => {
 		if (!domainId) {
 			form.reset({
 				host: "",
+				isHostRegex: false,
 				path: undefined,
 				internalPath: undefined,
 				stripPath: false,
@@ -529,6 +532,28 @@ export const AddDomain = ({ id, type, domainId = "", children }: Props) => {
 											</div>
 
 											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								
+								<FormField
+									control={form.control}
+									name="isHostRegex"
+									render={({ field }) => (
+										<FormItem className="flex flex-row items-center justify-between p-3 border rounded-lg shadow-sm">
+											<div className="space-y-0.5">
+												<FormLabel>Host Regex</FormLabel>
+												<FormDescription>
+													Is the hostname a regex pattern?
+												</FormDescription>
+												<FormMessage />
+											</div>
+											<FormControl>
+												<Switch
+													checked={field.value}
+													onCheckedChange={field.onChange}
+												/>
+											</FormControl>
 										</FormItem>
 									)}
 								/>
