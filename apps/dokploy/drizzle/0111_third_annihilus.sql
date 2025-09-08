@@ -1,0 +1,1 @@
+ALTER TABLE "domain" ADD COLUMN "isHostRegex" boolean DEFAULT false NOT NULL;
